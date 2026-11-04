@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="weather-container">
+
+    <div class="weather-heading">
+        <h1>🌦️ Smart Farming Weather</h1>
+        <p>Check weather conditions and plan your farming activities.</p>
+    </div>
+
+    <form method="POST" class="weather-search">
+        <input type="hidden" name="csrf_token"
+       value="{{ csrf_token() }}">
+        <input
+            type="text"
+            name="location"
+            placeholder="Enter village or city name"
+            required
+        >
+        <button type="submit">Check Weather</button>
+    </form>
+
+    {% if weather %}
+
+    <div class="weather-location">
+        <h2>📍 {{ weather.location }}</h2>
+        <p>
+            {{ weather.state }}
+            {% if weather.country %}, {{ weather.country }}{% endif %}
+        </p>
+        <small>Weather time: {{ weather.time }}</small>
+    </div>
+
+    <div class="weather-grid">
+
+        <div class="weather-card">
+            <span>🌡️</span>
+            <h3>Temperature</h3>
+            <strong>{{ weather.temperature }} °C</strong>
+        </div>
+
+        <div class="weather-card">
+            <span>💧</span>
+            <h3>Humidity</h3>
+            <strong>{{ weather.humidity }} %</strong>
+        </div>
+
+        <div class="weather-card">
+            <span>🌧️</span>
+            <h3>Current Precipitation</h3>
+            <strong>{{ weather.precipitation }} mm</strong>
+        </div>
+
+        <div class="weather-card">
+            <span>💨</span>
+            <h3>Wind Speed</h3>
+            <strong>{{ weather.wind_speed }} km/h</strong>
+        </div>
+
+        <div class="weather-card">
+            <span>🌦️</span>
+            <h3>Today's Rainfall Forecast</h3>
+            <strong>{{ weather.rainfall_today }} mm</strong>
+        </div>
+
+        <div class="weather-card">
+            <span>☔</span>
+            <h3>Rain Probability</h3>
+            <strong>{{ weather.rain_probability }} %</strong>
+        </div>
+
+        <div class="weather-card">
+            <span>🔥</span>
+            <h3>Maximum Temperature</h3>
+            <strong>{{ weather.max_temperature }} °C</strong>
+        </div>
+
+        <div class="weather-card">
+            <span>🌤️</span>
+            <h3>Minimum Temperature</h3>
+            <strong>{{ weather.min_temperature }} °C</strong>
+        </div>
+
+    </div>
+
+    <div class="farming-advice">
+        <h2>🌱 Smart Farming Advice</h2>
+
+        {% for advice in farming_advice %}
+            <div class="advice-item">
+                <span>✔</span>
+                <p>{{ advice }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% endif %}
+
+    <p class="weather-note">
+        Weather values are forecast data and may change.
+        Check local conditions before making irrigation,
+        spraying or fertilizer decisions.
+    </p>
+
+</div>
+
+{% endblock %}

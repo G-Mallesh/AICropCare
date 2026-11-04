@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="admin-container">
+
+    <a href="{{ url_for('admin') }}" class="admin-back">
+        ← Back to Admin Dashboard
+    </a>
+
+    <h1>🌾 Crop Management</h1>
+    <p>Add crop categories to AI CropCare.</p>
+
+    <form method="POST" class="admin-form">
+<input type="hidden" name="csrf_token"
+       value="{{ csrf_token() }}">
+        <label>Crop Name</label>
+        <input
+            type="text"
+            name="crop_name"
+            placeholder="Example: Groundnut"
+            maxlength="100"
+            required
+        >
+
+        <label>Description</label>
+        <textarea
+            name="description"
+            placeholder="Enter crop description"
+            rows="3"
+        ></textarea>
+
+        <button type="submit">Add Crop</button>
+
+    </form>
+
+    <h2 class="admin-section-title">Available Crops</h2>
+
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Crop Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for crop in crops %}
+                <tr>
+                    <td>{{ crop.id }}</td>
+                    <td>{{ crop.crop_name }}</td>
+                    <td>{{ crop.description or '-' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No crop categories available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

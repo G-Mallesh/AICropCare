@@ -1,0 +1,61 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Farmer Login | AI CropCare{% endblock %}
+
+{% block content %}
+
+<section class="auth-section">
+
+    <div class="auth-image">
+        <div>
+            <span>🌾 AI CROPCare</span>
+            <h1>Welcome Back, Farmer!</h1>
+            <p>Discover smarter ways to protect your crops and improve farm health.</p>
+        </div>
+    </div>
+
+    <div class="auth-form">
+
+        <div class="auth-heading">
+            <h2>Farmer Login</h2>
+            <p>Enter your account details to continue.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <input type="hidden" name="csrf_token"
+             value="{{ csrf_token() }}">
+
+    <button type="submit">Clear Chat</button>
+            <label>Email Address</label>
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label>Password</label>
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <button type="submit" class="auth-submit">
+                Login to Dashboard →
+            </button>
+
+        </form>
+
+        <p class="auth-switch">
+            Don't have an account?
+            <a href="{{ url_for('auth.register') }}">Register here</a>
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,132 @@
+
+{% extends "base.html" %}
+
+{% block title %}AI CropCare | Smart Agriculture{% endblock %}
+
+{% block content %}
+
+<section class="hero-section">
+
+    <div class="hero-content">
+
+        <span class="hero-tag">🌿 SMART AGRICULTURE PLATFORM</span>
+
+        <h1>
+            Protect Your Crops<br>
+            With <span>Artificial Intelligence</span>
+        </h1>
+
+        <p>
+            Detect crop diseases using AI image analysis,
+            understand weather conditions and receive
+            smart farming recommendations.
+        </p>
+
+        <div class="hero-buttons">
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('detect') }}" class="btn-primary">
+                    Detect Crop Disease →
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="btn-secondary">
+                    Dashboard
+                </a>
+            {% else %}
+                <a href="{{ url_for('auth.register') }}" class="btn-primary">
+                    Get Started →
+                </a>
+                <a href="{{ url_for('auth.login') }}" class="btn-secondary">
+                    Login
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="hero-trust">
+            <span>✓ AI-powered analysis</span>
+            <span>✓ Smart recommendations</span>
+            <span>✓ Farmer-friendly platform</span>
+        </div>
+
+    </div>
+
+    <div class="hero-image" >
+        <img
+          src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1000"
+          alt="Green agricultural farmland">
+        <div class="floating-card">
+            <span>🌱</span>
+            <div>
+                <strong>Smart Farming</strong>
+                <small>Technology for agriculture</small>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="features-section">
+
+    <div class="section-heading">
+        <span>OUR PLATFORM</span>
+        <h2>Everything Your Farm Needs</h2>
+        <p>Smart digital tools to support better crop management.</p>
+    </div>
+
+    <div class="feature-grid">
+
+        <article class="feature-card">
+            <div class="feature-icon">🔬</div>
+            <h3>AI Disease Detection</h3>
+            <p>Upload crop images and get an AI-generated disease prediction.</p>
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('detect') }}">Explore →</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Login to explore →</a>
+            {% endif %}
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>AI Farming Assistant</h3>
+            <p>Ask farming questions and receive practical guidance.</p>
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('chatbot') }}">Explore →</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Login to explore →</a>
+            {% endif %}
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">🌦️</div>
+            <h3>Weather Monitoring</h3>
+            <p>Check local weather conditions and farming suggestions.</p>
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('weather') }}">Explore →</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Login to explore →</a>
+            {% endif %}
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Farm Analytics</h3>
+            <p>Review disease detection history and crop scan statistics.</p>
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('analytics') }}">Explore →</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Login to explore →</a>
+            {% endif %}
+        </article>
+
+    </div>
+
+</section>
+
+<section class="cta-section">
+    <h2>Start Your Smart Farming Journey</h2>
+    <p>Use AI-powered tools to support healthier crop management.</p>
+    <a href="{{ url_for('auth.register') }}" class="btn-primary">
+        Create Farmer Account →
+    </a>
+</section>
+
+{% endblock %}

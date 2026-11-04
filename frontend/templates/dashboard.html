@@ -1,0 +1,145 @@
+da
+{% extends 'base.html' %}
+
+{% block title %}Farmer Dashboard | AI CropCare{% endblock %}
+
+{% block content %}
+
+<section class="dashboard">
+
+    <div class="dashboard-header">
+        <div>
+            <span class="tag">FARMER CONTROL CENTER</span>
+            <h1>Welcome, {{ session.get('name') }}! 🌱</h1>
+            <p>Monitor your crop health and manage disease detections.</p>
+        </div>
+
+        <a href="{{ url_for('detect') }}" class="primary-btn">
+            + Detect Crop Disease
+        </a>
+    </div>
+
+    <div class="dashboard-stats">
+
+        <div class="stat-card">
+            <div class="stat-icon">🔍</div>
+            <p>Total Scans</p>
+            <h2>{{ stats.total }}</h2>
+            <span>Crop image analyses</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🌱</div>
+            <p>Healthy Results</p>
+            <h2>{{ stats.healthy }}</h2>
+            <span>Recorded healthy predictions</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🦠</div>
+            <p>Disease Results</p>
+            <h2>{{ stats.diseased }}</h2>
+            <span>Recorded disease predictions</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">👨‍🌾</div>
+            <p>Account</p>
+            <h2>Active</h2>
+            <span>Farmer account</span>
+        </div>
+
+    </div>
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-panel">
+
+            <div class="panel-heading">
+                <h2>Recent Crop Detections</h2>
+                <a href="{{ url_for('history') }}">View All →</a>
+            </div>
+
+            {% if detections %}
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Crop</th>
+                            <th>Detection</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in detections %}
+                        <tr>
+                            <td>{{ item.crop_name }}</td>
+                            <td>{{ item.disease_name }}</td>
+                            <td>{{ item.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+                <div class="empty-icon">🌿</div>
+                <h3>No detections yet</h3>
+                <p>🍃Upload a crop leaf image to get started.</p>
+                <a href="{{ url_for('detect') }}" class="primary-btn">
+                    Start Detection
+                </a>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <div class="dashboard-panel tips-panel">
+            <div class="panel-heading">
+                <h2>Quick Actions</h2>
+            </div>
+            <a href="{{ url_for('analytics') }}" class="btn">
+    📊 View Crop Analytics
+</a>
+          <a href="{{ url_for('detect') }}" class="quick_action">
+    📷 Detect Crop Disease →
+</a>
+            <span>📷</span>
+           </div>
+        
+                    <h3><Detect Disease/h3>
+                    <p>Upload crop leaf image</p>
+                </div>
+           
+            
+         
+
+            <a href="{{ url_for('history') }}" class="quick_action">
+    📄 Detection History →
+</a>
+                    <h3>Detection History</h3>
+                    <p>Review previous scns</p>
+                </div>
+            </a>
+
+            <a href="{{url_for('home')}}"class="quick-action"
+                <span class="tip-icon">🌾</span>
+                <div>
+                    <h3>Farming Solutions</h3>
+                    <p>Explore crop care features</p>
+                </div>
+                <b>➜</b>
+            </a>
+            
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

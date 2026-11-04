@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="admin-container">
+
+    <a href="{{ url_for('admin') }}" class="admin-back">
+        ← Back to Admin Dashboard
+    </a>
+
+    <h1>🦠 Disease Management</h1>
+    <p>Add disease information for farmer recommendations.</p>
+
+    <form method="POST" class="admin-form">
+  <input type="hidden" name="csrf_token"
+       value="{{ csrf_token() }}">
+        <label>Disease Name</label>
+        <input
+            type="text"
+            name="disease_name"
+            placeholder="Example: Early Blight"
+            maxlength="150"
+            required
+        >
+
+        <label>Crop</label>
+        <select name="crop_name" required>
+            <option value="">Select crop</option>
+
+            {% for crop in crops %}
+            <option value="{{ crop.crop_name }}">
+                {{ crop.crop_name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label>Symptoms</label>
+        <textarea name="symptoms" rows="3" required></textarea>
+
+        <label>Treatment</label>
+        <textarea name="treatment" rows="3" required></textarea>
+
+        <label>Prevention</label>
+        <textarea name="prevention" rows="3" required></textarea>
+
+        <button type="submit">Add Disease Information</button>
+
+    </form>
+
+    <h2 class="admin-section-title">Disease Database</h2>
+
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Disease</th>
+                    <th>Crop</th>
+                    <th>Symptoms</th>
+                    <th>Treatment</th>
+                    <th>Prevention</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for disease in diseases %}
+                <tr>
+                    <td>{{ disease.disease_name }}</td>
+                    <td>{{ disease.crop_name }}</td>
+                    <td>{{ disease.symptoms }}</td>
+                    <td>{{ disease.treatment }}</td>
+                    <td>{{ disease.prevention }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">No disease records available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,199 @@
+
+{% extends 'base.html' %}
+
+{% block title %}AI Disease Detection | CropCare{% endblock %}
+
+{% block content %}
+
+<section class="detect-section">
+
+    <div class="detect-heading">
+        <span class="tag">AI POWERED ANALYSIS</span>
+        <h1>Crop Disease Detection 🔬</h1>
+        <p>Upload a clear crop leaf photograph for AI-powered analysis.</p>
+    </div>
+
+    <div class="detect-container">
+
+        <div class="upload-card">
+
+            <div class="upload-icon">🌿</div>
+
+            <h2>Upload Crop Leaf Image</h2>
+            <p>Select the crop type and upload a clear photograph.</p>
+
+         <form method="POST"
+      action="{{ url_for('detect') }}"
+      enctype="multipart/form-data">
+
+    <!-- CSRF Security Token -->
+    <input type="hidden"
+           name="csrf_token"
+           value="{{ csrf_token() }}">
+
+    <label for="crop_name">Select Crop</label>
+
+    <select name="crop_name" id="crop_name" required>
+        <option value="">Choose crop type</option>
+        <option value="Tomato">Tomato</option>
+        <option value="Potato">Potato</option>
+        <option value="Rice">Rice</option>
+        <option value="Cotton">Cotton</option>
+        <option value="Maize">Maize</option>
+        <option value="Apple">Apple</option>
+        <option value="Grape">Grape</option>
+        <option value="Chilli">Chilli</option>
+    </select>
+
+    <label class="file-upload" for="crop_image">
+        <span>📸</span>
+        <strong>Choose Crop Photograph</strong>
+        <small>JPG, JPEG or PNG – Maximum 5 MB</small>
+    </label>
+
+    <input type="file"
+           name="crop_image"
+           id="crop_image"
+           accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+           required>
+
+    <div id="image-preview" class="image-preview"></div>
+
+    <button type="submit" class="detect-button">
+        🔍 Analyze Crop Image
+    </button>
+
+</form>
+        </div>
+
+        {% if result %}
+
+        <div class="result-card">
+
+            <span class="tag">AI ANALYSIS RESULT</span>
+
+            <h2>Detection Completed</h2>
+
+            <img src="{{ url_for('static', filename=image_path) }}"
+                 alt="Analyzed crop leaf">
+
+            <div class="result-detail">
+                <p>Predicted Disease / Class</p>
+                <h3>{{ result }}</h3>
+            </div>
+
+            <div class="confidence">
+                <p>Model Confidence</p>
+                <h2>{{ confidence }}%</h2>
+            </div>
+
+            {% if recommendation %}
+
+            <section class="recommendation-section">
+                <h2>🌱 Smart Farming Recommendations</h2>
+
+                <div class="recommendation-card">
+                    <h3>{{ recommendation.disease_name }}</h3>
+
+                    <p>
+                        <strong>Crop:</strong>
+                        {{ recommendation.crop_name }}
+                    </p>
+
+                    <p>
+                        <strong>Symptoms:</strong>
+                        {{ recommendation.symptoms }}
+                    </p>
+
+                    <p>
+                        <strong>Treatment:</strong>
+                        {{ recommendation.treatment }}
+                    </p>
+
+                    <p>
+                        <strong>Prevention:</strong>
+                        {{ recommendation.prevention }}
+                    </p>
+                </div>
+            </section>
+
+            {% else %}
+
+            <section class="recommendation-section">
+                <h2>🌱 Smart Farming Recommendations</h2>
+                <p>
+                    No matching recommendation was found for this
+                    prediction. Check the disease name in your database.
+                </p>
+            </section>
+
+            {% endif %}
+
+            <p class="result-note">
+                This is an AI model prediction, not a confirmed
+                agricultural diagnosis. Consult an agricultural
+                expert before applying treatment.
+            </p>
+
+            <a href="{{ url_for('detect') }}" class="primary-btn">
+                Analyze Another Image
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("crop_image");
+    const preview = document.getElementById("image-preview");
+
+    if (!input || !preview) return;
+
+    let currentImageUrl = null;
+
+    input.addEventListener("change", function () {
+        preview.replaceChildren();
+
+        if (currentImageUrl) {
+            URL.revokeObjectURL(currentImageUrl);
+            currentImageUrl = null;
+        }
+
+        const file = input.files[0];
+        if (!file) return;
+
+        const allowedTypes = ["image/jpeg", "image/png"];
+        const maxSize = 5 * 1024 * 1024;
+
+        if (!allowedTypes.includes(file.type)) {
+            alert("Please select a JPG, JPEG, or PNG image.");
+            input.value = "";
+            return;
+        }
+
+        if (file.size > maxSize) {
+            alert("Image size must be 5 MB or less.");
+            input.value = "";
+            return;
+        }
+
+        const image = document.createElement("img");
+        image.alt = "Selected crop preview";
+        image.style.maxWidth = "100%";
+        image.style.maxHeight = "300px";
+        image.style.objectFit = "contain";
+
+        currentImageUrl = URL.createObjectURL(file);
+        image.src = currentImageUrl;
+
+        preview.appendChild(image);
+    });
+});
+</script>
+
+{% endblock %}

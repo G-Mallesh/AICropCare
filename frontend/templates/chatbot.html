@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="chatbot-container">
+
+    <div class="chatbot-header">
+        <div>
+            <h1>🌱 AI Farming Assistant</h1>
+            <p>Ask questions and get farming guidance.</p>
+        </div>
+
+        <form action="{{ url_for('clear_chat') }}" method="POST">
+            <button type="submit" class="clear-chat-btn">
+                Clear Chat
+            </button>
+        </form>
+    </div>
+
+    <div class="chat-window">
+
+        {% if not chat_history %}
+
+            <div class="welcome-message">
+                <h2>👋 Welcome, Farmer!</h2>
+                <p>How can I help with your crops today?</p>
+
+                <div class="suggestion-list">
+                    <span>How to care for tomato plants?</span>
+                    <span>What causes yellow leaves?</span>
+                    <span>How often should I water rice?</span>
+                    <span>How can I improve soil health?</span>
+                </div>
+            </div>
+
+        {% endif %}
+
+        {% for message in chat_history %}
+
+            {% if message.role == "user" %}
+
+                <div class="chat-message user-message">
+                    <strong>👨‍🌾 You</strong>
+                    <p>{{ message.content }}</p>
+                </div>
+
+            {% else %}
+
+                <div class="chat-message bot-message">
+                    <strong>🤖 AI CropCare</strong>
+                    <p>{{ message.content }}</p>
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    <form method="POST"
+          action="{{ url_for('chatbot') }}"
+          class="chat-input-area">
+<input type="hidden" name="csrf_token"
+       value="{{ csrf_token() }}">
+        <input
+            type="text"
+            name="message"
+            placeholder="Ask your farming question..."
+            maxlength="2000"
+            required
+        >
+
+        <button type="submit">Send ➤</button>
+
+    </form>
+
+    <p class="chat-disclaimer">
+        AI answers are for general guidance. Confirm important crop
+        treatment decisions with a qualified agricultural expert.
+    </p>
+
+</div>
+
+{% endblock %}

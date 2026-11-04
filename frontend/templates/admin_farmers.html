@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="admin-container">
+     
+    <a href="{{ url_for('admin') }}" class="admin-back">
+        ← Back to Admin Dashboard
+    </a>
+
+    <h1>👨‍🌾 Farmer Management</h1>
+    <p>View registered farmer accounts.</p>
+
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Registered</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for farmer in farmers %}
+                <tr>
+                    <td>{{ farmer.id }}</td>
+                    <td>{{ farmer.name }}</td>
+                    <td>{{ farmer.email }}</td>
+                    <td>{{ farmer.phone or '-' }}</td>
+                    <td>{{ farmer.created_at }}</td>
+                    <td>
+                        <form
+                            method="POST"
+                            action="{{ url_for('delete_farmer', farmer_id=farmer.id) }}"
+                            onsubmit="return confirm('Permanently delete this farmer and all their detection records?');"
+                        >
+                        <input type="hidden" name="csrf_token"
+       value="{{ csrf_token() }}">
+                            <button type="submit" class="admin-delete">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6">No farmers registered yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

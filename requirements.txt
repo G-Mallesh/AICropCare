@@ -1,0 +1,12 @@
+Flask
+mysql-connector-python
+Werkzeug
+Pillow
+numpy
+tensorflow
+requests
+python-dotenv
+gunicorn
+openai
+Flask-WTF
+Flask-Limiter
